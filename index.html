@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OpenInnovate</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+
+        body {
+            background-color: #f9fafb;
+            color: #333;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header styling */
+        header {
+            background-color: #fff;
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .app-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #7c3aed;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .header-icon {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .login-btn {
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .signup-btn {
+            border: 1px solid #7c3aed;
+            color: #7c3aed;
+            background: none;
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .profile-pic {
+            width: 32px;
+            height: 32px;
+            background-color: #e5e7eb;
+            border-radius: 50%;
+            display: none;
+        }
+
+        /* Main Content styling */
+        main {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        /* Navigation styling */
+        nav {
+            background-color: #fff;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: none;
+            background: none;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .nav-btn.active {
+            color: #7c3aed;
+        }
+
+        .nav-btn span {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        /* Tab Content styling */
+        .tab-content {
+            padding-bottom: 64px;
+        }
+
+        /* Stories section styling */
+        .stories-section {
+            padding: 16px;
+            display: flex;
+            overflow-x: auto;
+            gap: 16px;
+            padding-bottom: 8px;
+        }
+
+        .story-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .story-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+        }
+
+        .story-add {
+            background-color: #f3e8ff;
+            border: 2px solid #7c3aed;
+            color: #7c3aed;
+        }
+
+        .story-regular {
+            background-color: #e5e7eb;
+        }
+
+        .story-label {
+            font-size: 12px;
+        }
+
+        /* Create post styling */
+        .create-post {
+            padding: 8px 16px;
+            background-color: #fff;
+            margin-bottom: 8px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .post-input-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            border: 1px solid #d1d5db;
+            border-radius: 9999px;
+            padding: 8px 16px;
+            text-align: left;
+            background: none;
+            color: #6b7280;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        /* Post styling */
+        .post {
+            background-color: #fff;
+            padding: 16px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            margin-bottom: 16px;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #e5e7eb;
+            border-radius: 50%;
+            margin-right: 12px;
+        }
+
+        .post-user-info h3 {
+            font-weight: 500;
+            font-size: 16px;
+        }
+
+        .post-user-info p {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .post-content {
+            margin-bottom: 12px;
+        }
+
+        .post-image {
+            height: 160px;
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9ca3af;
+            overflow: hidden;
+        }
+
+        .post-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .post-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 8px;
+            border-top: 1px solid #f3f4f6;
+            color: #6b7280;
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        /* Floating Action Button styling */
+        .fab {
+            position: fixed;
+            bottom: 80px;
+            right: 16px;
+            background-color: #7c3aed;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: none;
+            cursor: pointer;
+        }
+
+        /* Events tab styling */
+        .filter-bar {
+            padding: 16px;
+            background-color: #fff;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+        }
+
+        .location {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .location i {
+            color: #7c3aed;
+        }
+
+        .filter-btn {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 9999px;
+            padding: 4px 12px;
+            background: none;
+            cursor: pointer;
+        }
+
+        .categories {
+            padding: 12px 16px;
+            overflow-x: auto;
+        }
+
+        .categories-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .category-btn {
+            padding: 4px 16px;
+            border-radius: 9999px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .category-btn.active {
+            background-color: #7c3aed;
+            color: white;
+        }
+
+        .category-btn:not(.active) {
+            background-color: #f3f4f6;
+            color: #4b5563;
+        }
+
+        .event-list {
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .event-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .event-image {
+            height: 160px;
+            background-color: #f3f4f6;
+            position: relative;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .event-badge {
+            position: absolute;
+            bottom: 8px;
+            left: 8px;
+            background-color: #7c3aed;
+            color: white;
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .green-badge {
+            background-color: #059669;
+        }
+
+        .event-details {
+            padding: 16px;
+        }
+
+        .event-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .event-title {
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .event-date {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .favorite-btn {
+            background-color: #f3e8ff;
+            color: #7c3aed;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .event-location {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 12px;
+        }
+
+        .event-location i {
+            margin-right: 4px;
+        }
+
+        .event-description {
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .register-btn {
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        /* Reels tab styling */
+        .reels-container {
+            height: 100%;
+            background-color: black;
+            position: relative;
+        }
+
+        .reel-content {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280;
+        }
+
+        .reel-controls {
+            position: absolute;
+            bottom: 80px;
+            right: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .reel-action {
+            background-color: rgba(0, 0, 0, 0.6);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .reel-count {
+            color: white;
+            font-size: 14px;
+        }
+
+        .reel-info {
+            position: absolute;
+            bottom: 80px;
+            left: 16px;
+            max-width: 280px;
+        }
+
+        .reel-username {
+            color: white;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .reel-description {
+            color: white;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .reel-tag {
+            display: inline-block;
+            background-color: #7c3aed;
+            color: white;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .moderation-note {
+            position: absolute;
+            top: 16px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .moderation-badge {
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 9999px;
+        }
+
+        .reel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            border: none;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .reel-nav:hover {
+            opacity: 1;
+        }
+
+        .nav-prev {
+            left: 16px;
+        }
+
+        .nav-next {
+            right: 16px;
+        }
+
+        /* Female tab styling */
+        .locked-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .lock-icon {
+            width: 64px;
+            height: 64px;
+            background-color: #f3e8ff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #7c3aed;
+            margin-bottom: 16px;
+        }
+
+        .locked-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .locked-description {
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        .verify-btn {
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .info-box {
+            margin-top: 24px;
+            background-color: #f3e8ff;
+            padding: 16px;
+            border-radius: 8px;
+            max-width: 320px;
+        }
+
+        .info-title {
+            font-weight: 500;
+            color: #5b21b6;
+            margin-bottom: 8px;
+        }
+
+        .info-text {
+            font-size: 14px;
+            color: #4c1d95;
+        }
+
+        /* Modals styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            z-index: 1000;
+            display: none;
+        }
+
+        .modal {
+            background-color: white;
+            border-radius: 8px;
+            max-width: 480px;
+            width: 100%;
+            padding: 24px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .modal-content {
+            margin-bottom: 16px;
+        }
+
+        textarea.post-textarea {
+            width: 100%;
+            height: 128px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 16px;
+            resize: none;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .media-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #7c3aed;
+            border: 1px solid #7c3aed;
+            background: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .media-label {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .post-btn {
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .modal-note {
+            font-size: 12px;
+            color: #6b7280;
+            margin-top: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 4px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+        }
+
+        .form-button {
+            background-color: #7c3aed;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            width: 100%;
+            cursor: pointer;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 16px 0;
+        }
+
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background-color: #d1d5db;
+        }
+
+        .divider-text {
+            padding: 0 12px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .alt-action-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            border: 1px solid #d1d5db;
+            background: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .terms-text {
+            font-size: 12px;
+            color: #6b7280;
+            text-align: center;
+        }
+
+        .verification-steps {
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+        }
+
+        .steps-title {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .step-list {
+            list-style-type: none;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .step-icon {
+            color: #7c3aed;
+        }
+
+        .verification-button {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        /* File input styling */
+        .file-input-container {
+            position: relative;
+            margin-top: 16px;
+        }
+
+        .file-input {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-input-label {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #d1d5db;
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .upload-icon {
+            font-size: 24px;
+            color: #7c3aed;
+            margin-bottom: 8px;
+        }
+
+        .upload-text {
+            font-size: 14px;
+            color: #6b7280;
+        }
+
+        .upload-hint {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-top: 4px;
+        }
+
+        /* Preview styling */
+        .preview-container {
+            margin-top: 16px;
+            display: none;
+        }
+
+        .preview-item {
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .preview-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .preview-video {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+        }
+
+        .remove-preview {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background-color: rgba(0, 0, 0, 0.6);
+            color: white;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <!-- App Header -->
+    <header>
+        <h1 class="app-title">OpenInnovate</h1>
+        <div class="header-icons">
+            <button class="header-icon" id="search-btn">
+                <i class="fas fa-search"></i>
+            </button>
+            <button class="header-icon" id="notifications-btn">
+                <i class="fas fa-bell"></i>
+            </button>
+            <div class="auth-buttons" id="auth-buttons">
+                <button class="login-btn" id="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    <span>Login</span>
+                </button>
+                <button class="signup-btn" id="signup-btn">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Signup</span>
+                </button>
+            </div>
+            <div class="profile-pic" id="profile-pic"></div>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <!-- Community Tab -->
+        <div class="tab-content" id="community-tab">
+            <!-- Stories Section -->
+            <div class="stories-section">
+                <div class="story-item">
+                    <div class="story-circle story-add">
+                        <i class="fas fa-plus"></i>
+                    </div>
+                    <span class="story-label">Add</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-circle story-regular"></div>
+                    <span class="story-label">Innovation</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-circle story-regular"></div>
+                    <span class="story-label">Tech</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-circle story-regular"></div>
+                    <span class="story-label">Art</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-circle story-regular"></div>
+                    <span class="story-label">Science</span>
+                </div>
+                <div class="story-item">
+                    <div class="story-circle story-regular"></div>
+                    <span class="story-label">Social</span>
+                </div>
+            </div>
+
+            <!-- Create Post Section -->
+            <div class="create-post">
+                <button class="post-input-btn" id="create-post-btn">
+                    <i class="fas fa-user"></i>
+                    <span>Share your innovative ideas...</span>
+                </button>
+            </div>
+
+            <!-- Post Feed -->
+            <div class="posts-container">
+                <!-- Post 1 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-avatar"></div>
+                        <div class="post-user-info">
+                            <h3>Sarah Johnson</h3>
+                            <p>Sustainability Innovator • 2h ago</p>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>Just launched my community garden automation project! Using IoT sensors to optimize water usage and track plant growth. Looking for collaborators who can help scale this to more neighborhoods.</p>
+                    </div>
+                    <div class="post-image">
+                        <img src="https://cals.cornell.edu/sites/default/files/styles/full_width_gallery/public/2024-08/hackathon-1.jpg?h=790be497&itok=6683MeN2" alt="Garden Automation Project">
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-heart"></i>
+                            <span>142</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-comment"></i>
+                            <span>38</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Post 2 -->
+                <div class="post">
+                    <div class="post-header">
+                        <div class="post-avatar"></div>
+                        <div class="post-user-info">
+                            <h3>Akash Patel</h3>
+                            <p>Tech Enthusiast • 5h ago</p>
+                        </div>
+                    </div>
+                    <div class="post-content">
+                        <p>Our team has developed an open-source AI tool that helps small businesses identify sustainability opportunities. We're hosting a workshop next week to teach implementation - see the Events tab for details!</p>
+                    </div>
+                    <div class="post-actions">
+                        <button class="action-btn">
+                            <i class="fas fa-heart"></i>
+                            <span>89</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-comment"></i>
+                            <span>24</span>
+                        </button>
+                        <button class="action-btn">
+                            <i class="fas fa-share"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Floating Action Button -->
+            <button class="fab" id="fab-btn">
+                <i class="fas fa-plus"></i>
+            </button>
+        </div>
+
+        <!-- Events Tab -->
+        <div class="tab-content" id="events-tab" style="display: none;">
+            <!-- Filter Bar -->
+            <div class="filter-bar">
+                <div class="location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Bangalore</span>
+                </div>
+                <button class="filter-btn">
+                    <i class="fas fa-filter"></i>
+                    <span>Filters</span>
+                </button>
+            </div>
+
+            <!-- Categories -->
+            <div class="categories">
+                <div class="categories-container">
+                    <button class="category-btn active">All</button>
+                    <button class="category-btn">Tech</button>
+                    <button class="category-btn">Fitness</button>
+                    <button class="category-btn">Art</button>
+                    <button class="category-btn">Music</button>
+                    <button class="category-btn">Education</button>
+                    <button class="category-btn">Networking</button>
+                </div>
+            </div>
+
+            <!-- Event List -->
+            <div class="event-list">
+                <!-- Event 1 -->
+                <div class="event-card">
+                    <div class="event-image">
+                        <img src="" alt="Tech Hackathon">
+                        <div class="event-badge">Free</div>
+                    </div>
+                    <div class="event-details">
+                        <div class="event-header">
+                            <div>
+                                <h3 class="event-title">Tech Innovation Hackathon</h3>
+                                <p class
